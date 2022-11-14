@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2022-10-17T04:29:06Z" name="Default suite" finished-at="2022-10-17T04:29:14Z" duration-ms="7875">
+    <groups>
+    </groups>
+    <test started-at="2022-10-17T04:29:06Z" name="Default test" finished-at="2022-10-17T04:29:14Z" duration-ms="7875">
+      <class name="SampleProj.Bing_Test">
+        <test-method signature="setUp()[pri:0, instance:SampleProj.Bing_Test@35399441]" started-at="2022-10-17T09:59:06Z" name="setUp" finished-at="2022-10-17T09:59:14Z" duration-ms="7867" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+      </class> <!-- SampleProj.Bing_Test -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
