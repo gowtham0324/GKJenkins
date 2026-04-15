@@ -27,16 +27,17 @@ pipeline {
 
     post {
         always {
-            // JUnit test results
+            // JUnit test results (BEST PRACTICE)
             junit '**/target/surefire-reports/*.xml'
 
             // HTML Report publish
             publishHTML([
-                reportDir   : 'target/surefire-reports',
-                reportFiles : 'index.html',
-                reportName  : 'Test Report',
-                keepAll     : true,
-                allowMissing: false
+                reportDir             : 'target/surefire-reports',
+                reportFiles           : 'index.html',
+                reportName            : 'Test Report',
+                keepAll               : true,
+                allowMissing          : true,
+                alwaysLinkToLastBuild : true
             ])
 
             // Archive artifacts
