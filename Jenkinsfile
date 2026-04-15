@@ -16,9 +16,7 @@ pipeline {
             steps {
                 echo "Running with SEARCH_ITEM=${params.SEARCH_ITEM}"
 
-                sh """
-                    mvn clean test -DsearchItem="${params.SEARCH_ITEM}"
-                """
+                bat "mvn clean test -DsearchItem=\"${params.SEARCH_ITEM}\""
             }
         }
     }
