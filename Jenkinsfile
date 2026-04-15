@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'SEARCH_ITEM', defaultValue: 'laptop', description: 'Search value')
+        string(name: 'SearchItem', defaultValue: 'laptop', description: 'Search value')
     }
 
     stages {
@@ -14,7 +14,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh "mvn clean test -DsearchItem=${params.SEARCH_ITEM}"
+                sh "mvn clean test -DsearchItem=${params.SearchItem}"
             }
         }
     }
