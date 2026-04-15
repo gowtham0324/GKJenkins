@@ -21,6 +21,7 @@ public class Bing_Test {
 		driver = new ChromeDriver(options);
 		driver.get("https://www.google.com");
 		String searchItem = System.getProperty("searchItem");
+			System.out.println("searchItem : "+ searchItem);
 		driver.findElement(By.xpath("//*[@title='Search']")).sendKeys(searchItem);
 		System.out.println("Successfully Executed the Script.....!");
 	}
