@@ -1,30 +1,20 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'SEARCH_ITEM', defaultValue: 'laptop', description: 'Search value')
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: https://github.com/gowtham0324/GKJenkins.git'
+                git branch: 'main', url: 'https://github.com/gowtham0324/GKJenkins.git'
             }
         }
 
-        stage('Build') {
+        stage('Run Tests') {
             steps {
-                echo 'Building project...'
-                sh 'mvn clean install'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                sh 'mvn test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
+                sh "mvn clean test -DsearchItem=${params.SEARCH_ITEM}"
             }
         }
     }
