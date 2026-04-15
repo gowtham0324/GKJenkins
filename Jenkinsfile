@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'   // 👈 MUST match name in Jenkins
+        maven 'Maven'
     }
 
     parameters {
@@ -22,6 +22,25 @@ pipeline {
 
                 bat "mvn clean test -DsearchItem=\"${params.SEARCH_ITEM}\""
             }
+        }
+    }
+
+    post {
+        always {
+            // JUnit test results
+            junit '**/target/surefire-reports/*.xml'
+
+            // HTML Report publish
+            publishHTML([
+                reportDir   : 'target/surefire-reports',
+                reportFiles : 'index.html',
+                reportName  : 'Test Report',
+                keepAll     : true,
+                allowMissing: false
+            ])
+
+            // Archive artifacts
+            archiveArtifacts artifacts: '**/target/**/*.*', allowEmptyArchive: true
         }
     }
 }
