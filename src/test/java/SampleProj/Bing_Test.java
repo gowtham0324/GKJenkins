@@ -21,7 +21,13 @@ public class Bing_Test {
 		driver = new ChromeDriver(options);
 		driver.get("https://www.google.com");
 		String searchItem = System.getProperty("searchItem");
-			System.out.println("searchItem : "+ searchItem);
+
+		// ✅ Safety check
+		if (searchItem == null || searchItem.trim().isEmpty()) {
+			throw new RuntimeException("searchItem is NULL. Check Jenkins parameter!");
+		}
+
+		System.out.println("Search Item: " + searchItem);
 		driver.findElement(By.xpath("//*[@title='Search']")).sendKeys(searchItem);
 		System.out.println("Successfully Executed the Script.....!");
 	}
