@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'SearchItem', defaultValue: 'laptop', description: 'Search value')
+        string(name: 'SEARCH_ITEM', defaultValue: 'Iphone 17Pro max', description: 'Search value')
     }
 
     stages {
@@ -14,8 +14,23 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh "mvn clean test -DsearchItem=${params.SearchItem}"
+                sh "mvn clean test -DsearchItem='${params.SEARCH_ITEM}'"
             }
+        }
+    }
+
+    post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+            archiveArtifacts artifacts: '**/target/**/*.*', allowEmptyArchive: true
+        }
+
+        success {
+            echo "✅ Build Successful"
+        }
+
+        failure {
+            echo "❌ Build Failed"
         }
     }
 }
