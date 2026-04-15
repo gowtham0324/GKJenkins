@@ -10,7 +10,11 @@ pipeline {
     }
 
     triggers {
-        cron('30 3 * * *')   // 9 AM IST daily schedule only
+        // Runs daily at 9 AM IST (3:30 AM UTC)
+        cron('30 3 * * *')
+
+        // Trigger on SCM polling (detects push to main branch)
+        pollSCM('H/5 * * * *')
     }
 
     stages {
@@ -23,13 +27,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo "Running with SEARCH_ITEM=${params.SEARCH_ITEM}"
-                bat "mvn clean test -DsearchItem=\"${params.SEARCH_ITEM}\""
-            }
-        }
 
-        stage('Generate Allure Report') {
-            steps {
-                bat "mvn allure:report"
+                bat "mvn clean test -DsearchItem=\"${params.SEARCH_ITEM}\""
             }
         }
     }
@@ -38,11 +37,16 @@ pipeline {
         always {
             junit '**/target/surefire-reports/*.xml'
 
-            allure([
-                includeProperties: false,
-                jdk              : '',
-                results          : [[path: 'target/allure-results']]
+            publishHTML([
+                reportDir             : 'target/surefire-reports',
+                reportFiles           : 'index.html',
+                reportName            : 'Test Report',
+                keepAll               : true,
+                allowMissing          : true,
+                alwaysLinkToLastBuild : true
             ])
+
+            archiveArtifacts artifacts: '**/target/**/*.*', allowEmptyArchive: true
         }
     }
 }
