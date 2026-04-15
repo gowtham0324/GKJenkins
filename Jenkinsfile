@@ -9,6 +9,10 @@ pipeline {
         string(name: 'SEARCH_ITEM', defaultValue: 'Iphone 17Pro max', description: 'Search value')
     }
 
+    triggers {
+        cron('30 3 * * *')   // 9 AM IST daily schedule only
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -19,29 +23,26 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo "Running with SEARCH_ITEM=${params.SEARCH_ITEM}"
-
                 bat "mvn clean test -DsearchItem=\"${params.SEARCH_ITEM}\""
+            }
+        }
+
+        stage('Generate Allure Report') {
+            steps {
+                bat "mvn allure:report"
             }
         }
     }
 
     post {
         always {
-            // JUnit test results (BEST PRACTICE)
             junit '**/target/surefire-reports/*.xml'
 
-            // HTML Report publish
-            publishHTML([
-                reportDir             : 'target/surefire-reports',
-                reportFiles           : 'index.html',
-                reportName            : 'Test Report',
-                keepAll               : true,
-                allowMissing          : true,
-                alwaysLinkToLastBuild : true
+            allure([
+                includeProperties: false,
+                jdk              : '',
+                results          : [[path: 'target/allure-results']]
             ])
-
-            // Archive artifacts
-            archiveArtifacts artifacts: '**/target/**/*.*', allowEmptyArchive: true
         }
     }
 }
